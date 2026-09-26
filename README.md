@@ -7,7 +7,7 @@
 | | |
 | :--- | :--- |
 | **Network** | Ethereum Sepolia (chain ID `11155111`) |
-| **Root name** | `shriyash.eth` |
+| **Root name** | `aegisnet.eth` |
 | **Contracts** | 5 deployed ([addresses](#-deployed-contracts-sepolia)) |
 | **Integrations** | ENS · World ID · 1inch SwapVM & Aqua · Uniswap v4 hooks · Anthropic Claude |
 
@@ -46,7 +46,7 @@ To trade on your behalf, an AI agent needs a wallet key. That creates three prob
 
 | Layer | What it does | Where |
 | :--- | :--- | :--- |
-| **Identity & limits** | Every agent is registered as `name.shriyash.eth` with an owner, a whitelist of contracts it may call, a daily spending limit and an approval threshold. | `AegisSubnameRegistry` |
+| **Identity & limits** | Every agent is registered as `name.aegisnet.eth` with an owner, a whitelist of contracts it may call, a daily spending limit and an approval threshold. | `AegisSubnameRegistry` |
 | **Execution gate** | Agents can't act directly. They submit requests to the manager, which checks identity and whitelist onchain. Under the threshold a trade runs immediately; at or above it, the trade pauses. | `AegisExecutionManager` |
 | **Proof of human** | A paused trade executes only after the owner verifies with **World ID**. The proof is tied to that exact request, and each owner is bound to one verified human. | Backend + `AegisExecutionManager` |
 | **AI planning** | **Claude** turns a plain-English goal into a strategy and explains it. Deterministic code, not the model, builds the transaction. | Backend |
@@ -61,22 +61,22 @@ To trade on your behalf, an AI agent needs a wallet key. That creates three prob
 
 | Contract | Address | Role |
 | :--- | :--- | :--- |
-| **AegisSubnameRegistry** | [`0x09FfDB167F80fF9E4C5BE64C24bEbeCF1F4B4625`](https://sepolia.etherscan.io/address/0x09FfDB167F80fF9E4C5BE64C24bEbeCF1F4B4625) | Agent identities, owners, whitelists, limits, ENSIP-26 text records |
-| **AegisExecutionManager** | [`0xC65d65A48cB24CA9bd6df02Ea83Ef44571E5594c`](https://sepolia.etherscan.io/address/0xC65d65A48cB24CA9bd6df02Ea83Ef44571E5594c) | Request queue, World ID gate, execution, cancellation |
-| **AegisSwapVMAdapter** | [`0xc2CA4DB9A01367fA06F56dcf8681993b517D19f1`](https://sepolia.etherscan.io/address/0xc2CA4DB9A01367fA06F56dcf8681993b517D19f1) | 1inch SwapVM opcode router (manager-only) |
-| **AegisUniswapV4Hook** | [`0x0F491f0D3CfB919A259E69F974Ae772912f13B2e`](https://sepolia.etherscan.io/address/0x0F491f0D3CfB919A259E69F974Ae772912f13B2e) | Agent-gated `beforeSwap` hook |
-| **WorldIDVerifier** | [`0xedd0bb0F06a2c12DC502165d98fbbba6701a12Ba`](https://sepolia.etherscan.io/address/0xedd0bb0F06a2c12DC502165d98fbbba6701a12Ba) | Mock verifier for the onchain ZK path on testnet (approvals in the app use the relayer attestation path) |
+| **AegisSubnameRegistry** | [`0x48EEFC9F26181Bd059daCc3EF9fD70F197145373`](https://sepolia.etherscan.io/address/0x48EEFC9F26181Bd059daCc3EF9fD70F197145373) | Agent identities, owners, whitelists, limits, ENSIP-26 text records |
+| **AegisExecutionManager** | [`0xa7C668691382166eF71534a1996F60F6f218b887`](https://sepolia.etherscan.io/address/0xa7C668691382166eF71534a1996F60F6f218b887) | Request queue, World ID gate, execution, cancellation |
+| **AegisSwapVMAdapter** | [`0x3fE49BC40C1f06d3D867ed6AaDA5b21a0cF4c611`](https://sepolia.etherscan.io/address/0x3fE49BC40C1f06d3D867ed6AaDA5b21a0cF4c611) | 1inch SwapVM opcode router (manager-only) |
+| **AegisUniswapV4Hook** | [`0xe2fc1252390B6AcC180Cd43998130a478E2a66b6`](https://sepolia.etherscan.io/address/0xe2fc1252390B6AcC180Cd43998130a478E2a66b6) | Agent-gated `beforeSwap` hook |
+| **WorldIDVerifier** | [`0x15f25Fc3261B8d3cFb23679B9E65f4D030501623`](https://sepolia.etherscan.io/address/0x15f25Fc3261B8d3cFb23679B9E65f4D030501623) | Mock verifier for the onchain ZK path on testnet (approvals in the app use the relayer attestation path) |
 
 - **Deployer, protocol owner and relayer signer:** [`0x9eeAb92431FD385981735dbF5B949b6C4c2eBC39`](https://sepolia.etherscan.io/address/0x9eeAb92431FD385981735dbF5B949b6C4c2eBC39)
 - **Deployment record:** [`contracts/deployment-config.json`](contracts/deployment-config.json), mirrored to [`backend/src/config/contracts.json`](backend/src/config/contracts.json)
 
 ## 🔗 Live onchain proof
 
-Real transactions on Sepolia, made through these contracts by agent `agent1.shriyash.eth`:
+Real transactions on Sepolia, made through these contracts by agent `agent1.aegisnet.eth`:
 
 | What happened | Transaction |
 | :--- | :--- |
-| Agent `agent1.shriyash.eth` registered | [`0x3156c01b…6d4d`](https://sepolia.etherscan.io/tx/0x3156c01b0e9aad93714adc60d271e34aa53269517897c21cc7b1d703deb66d4d) |
+| Agent `agent1.aegisnet.eth` registered | [`0x3156c01b…6d4d`](https://sepolia.etherscan.io/tx/0x3156c01b0e9aad93714adc60d271e34aa53269517897c21cc7b1d703deb66d4d) |
 | $500 trade: under the threshold, executed in the same transaction | [`0x2e9c6287…1c1c`](https://sepolia.etherscan.io/tx/0x2e9c628703817b597085eea8f18ad83bb4af2911371ab4950326fbb1da9b6c1c) |
 | $5,000 trade: paused onchain for World ID | [`0x16dbde9f…0843`](https://sepolia.etherscan.io/tx/0x16dbde9f959b5888e73be12242c802d6edb449275f2b64c00094ede7d7890843) |
 | $5,000 trade: World ID approval recorded | [`0xe8727000…4a23`](https://sepolia.etherscan.io/tx/0xe8727000356eac97aaa3016fded601610d84c3d16f000599caf0be8503e84a23) |
@@ -88,7 +88,7 @@ Real transactions on Sepolia, made through these contracts by agent `agent1.shri
 ## 🤝 Integrations
 
 ### ENS: agent identity & access control
-- Each agent gets a hierarchical name under the root, for example `agent1.shriyash.eth`. Its node is `keccak256(rootNode, keccak256(label))`, following ENS namehash.
+- Each agent gets a hierarchical name under the root, for example `agent1.aegisnet.eth`. Its node is `keccak256(rootNode, keccak256(label))`, following ENS namehash.
 - **Enhanced Access Control (EAC):** a per-agent whitelist of callable contracts, a daily spending limit and a biometric threshold, all checked by `isAgentAuthorized`.
 - **ENSIP-26 text records** such as `agent.capabilities` and `agent.description`.
 
@@ -300,7 +300,7 @@ All options are documented in [`backend/.env.example`](backend/.env.example). Th
 | `WORLD_ID_ACTION` | ✅ | Action ID (for example `agent-high-value-auth`). Allow **unlimited** verifications per user. |
 | `WORLD_ID_VERIFY_MODE` | | `cloud` (default, real proofs) or `dev` (no proof check, local testing only) |
 | `WORLD_ID_VERIFICATION_LEVEL` | | `device` (default) or `orb` |
-| `ENS_ROOT_NAME` | | Root name for agents (default `shriyash.eth`) |
+| `ENS_ROOT_NAME` | | Root name for agents (default `aegisnet.eth`) |
 | `BIOMETRIC_THRESHOLD_USD` | | Default approval threshold (default `1000`) |
 | `ANTHROPIC_API_KEY` | | Enables the Claude planner |
 | `CLAUDE_MODEL` | | Default `claude-opus-5` |

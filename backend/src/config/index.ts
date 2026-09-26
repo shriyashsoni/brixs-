@@ -59,7 +59,7 @@ export const config = {
   expectedChainId: parseInt(process.env.CHAIN_ID || '11155111', 10),
   // Relayer key: signs World ID attestations the contract checks (must equal the manager's relayerSigner)
   privateKey: realValue(process.env.PRIVATE_KEY) || '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-  rootEnsName: process.env.ENS_ROOT_NAME || 'shriyash.eth',
+  rootEnsName: process.env.ENS_ROOT_NAME || 'aegisnet.eth',
   worldIdAppId: process.env.WORLD_ID_APP_ID || 'app_staging_aegisnet_2026',
   worldIdAction: process.env.WORLD_ID_ACTION || 'agent-high-value-auth',
   // "cloud" (default) verifies proofs with the World ID Developer API; "dev" accepts any

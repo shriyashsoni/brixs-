@@ -18,7 +18,7 @@ async function main() {
     process.exit(1);
   }
 
-  const rootName = process.env.ENS_ROOT_NAME || "shriyash.eth";
+  const rootName = process.env.ENS_ROOT_NAME || "aegisnet.eth";
   const worldIdSepoliaRouter = process.env.WORLD_ID_SEPOLIA_ROUTER || "0x719683F13Eeea7D84fCBa5d7d17Bf82e03E3d260";
   const worldIdGroupId = process.env.WORLD_ID_GROUP_ID || 1;
   const externalNullifier = process.env.WORLD_ID_EXTERNAL_NULLIFIER || 1;

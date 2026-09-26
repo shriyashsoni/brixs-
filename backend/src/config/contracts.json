@@ -1,14 +1,14 @@
 {
   "network": "sepolia",
   "chainId": "11155111",
-  "rootName": "shriyash.eth",
+  "rootName": "aegisnet.eth",
   "deployer": "0x9eeAb92431FD385981735dbF5B949b6C4c2eBC39",
   "contracts": {
-    "AegisSubnameRegistry": "0x09FfDB167F80fF9E4C5BE64C24bEbeCF1F4B4625",
-    "WorldIDVerifier": "0xedd0bb0F06a2c12DC502165d98fbbba6701a12Ba",
-    "AegisExecutionManager": "0xC65d65A48cB24CA9bd6df02Ea83Ef44571E5594c",
-    "AegisSwapVMAdapter": "0xc2CA4DB9A01367fA06F56dcf8681993b517D19f1",
-    "AegisUniswapV4Hook": "0x0F491f0D3CfB919A259E69F974Ae772912f13B2e"
+    "AegisSubnameRegistry": "0x48EEFC9F26181Bd059daCc3EF9fD70F197145373",
+    "WorldIDVerifier": "0x15f25Fc3261B8d3cFb23679B9E65f4D030501623",
+    "AegisExecutionManager": "0xa7C668691382166eF71534a1996F60F6f218b887",
+    "AegisSwapVMAdapter": "0x3fE49BC40C1f06d3D867ed6AaDA5b21a0cF4c611",
+    "AegisUniswapV4Hook": "0xe2fc1252390B6AcC180Cd43998130a478E2a66b6"
   },
-  "timestamp": "2026-09-26T05:50:24.884Z"
+  "timestamp": "2026-09-26T18:28:01.657Z"
 }

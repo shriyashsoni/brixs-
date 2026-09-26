@@ -8,7 +8,7 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log(`Deploying contracts with account: ${deployer.address}`);
 
-  const rootName = process.env.ENS_ROOT_NAME || "shriyash.eth";
+  const rootName = process.env.ENS_ROOT_NAME || "aegisnet.eth";
   const worldIdGroupId = process.env.WORLD_ID_GROUP_ID || 1;
   const externalNullifier = process.env.WORLD_ID_EXTERNAL_NULLIFIER || 1;
 

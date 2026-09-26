@@ -95,9 +95,9 @@ const reason = (e) => e.reason || e.shortMessage || e.message;
   await call('/api/execution/refresh', {});
   const list = await call('/api/execution/requests?agent=' + me);
   ok(list.requests.length === 4, 'indexed ' + list.requests.length + ' requests: ' + list.requests.map((r) => r.valueUSD + ':' + r.status).join(', '));
-  ok(list.requests.every((r) => r.agentSubname === 'judge1.shriyash.eth' && r.ownerAddress === me), 'requests carry ENS name and owner');
+  ok(list.requests.every((r) => r.agentSubname === 'judge1.aegisnet.eth' && r.ownerAddress === me), 'requests carry ENS name and owner');
   const agents = await call('/api/ens/agents?owner=' + me);
-  ok(agents.agents.length === 1 && agents.agents[0].subnameFull === 'judge1.shriyash.eth', 'agents by owner from chain events');
+  ok(agents.agents.length === 1 && agents.agents[0].subnameFull === 'judge1.aegisnet.eth', 'agents by owner from chain events');
 
   console.log('8. Revoke from the owner wallet');
   await (await registry.revokeSubname(node)).wait();

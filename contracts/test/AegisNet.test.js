@@ -5,7 +5,7 @@ describe("AegisNet Matrix Core Protocol Tests", function () {
   let owner, agent, user;
   let registry, executionManager, swapVMAdapter, uniswapHook, mockWorldID, mockToken;
 
-  const ROOT_NAME = "shriyash.eth";
+  const ROOT_NAME = "aegisnet.eth";
   const SUBNAME_LABEL = "agent1";
   const BIOMETRIC_THRESHOLD = ethers.parseEther("1000"); // $1000 USD threshold
   const DAILY_LIMIT = ethers.parseEther("50000");

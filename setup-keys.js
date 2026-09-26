@@ -12,8 +12,8 @@ SEPOLIA_RPC_URL=https://rpc.ankr.com/eth_sepolia
 # Deployer Private Key (Must be funded with Sepolia ETH)
 PRIVATE_KEY=0x_YOUR_PRIVATE_KEY_HERE
 
-# Root ENS Domain Name registered on Sepolia (Default: shriyash.eth)
-ENS_ROOT_NAME=shriyash.eth
+# Root ENS Domain Name registered on Sepolia (Default: aegisnet.eth)
+ENS_ROOT_NAME=aegisnet.eth
 
 # -------------------------------------------------------------
 # 2. WORLD ID BIOMETRIC CREDENTIALS

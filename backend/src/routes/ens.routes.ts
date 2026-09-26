@@ -9,7 +9,7 @@ const ensService = new ENSService();
 
 /**
  * POST /api/ens/register-subname
- * Register an agent subname (e.g. agent1.shriyash.eth) with Enhanced Access Control (EAC)
+ * Register an agent subname (e.g. agent1.aegisnet.eth) with Enhanced Access Control (EAC)
  */
 router.post(
   '/register-subname',

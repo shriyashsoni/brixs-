@@ -24,7 +24,7 @@ export class ENSService {
   private registryContract = new ethers.Contract(config.contracts.AegisSubnameRegistry, RegistryABI, wallet);
 
   /**
-   * Registers a new agent subname (e.g., agent1.shriyash.eth) with Enhanced Access Control (EAC)
+   * Registers a new agent subname (e.g., agent1.aegisnet.eth) with Enhanced Access Control (EAC)
    */
   async registerAgentSubname(
     label: string,
