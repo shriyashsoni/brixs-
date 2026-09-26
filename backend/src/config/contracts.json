@@ -1,0 +1,14 @@
+{
+  "network": "sepolia",
+  "chainId": "11155111",
+  "rootName": "shriyash.eth",
+  "deployer": "0x9eeAb92431FD385981735dbF5B949b6C4c2eBC39",
+  "contracts": {
+    "AegisSubnameRegistry": "0x09FfDB167F80fF9E4C5BE64C24bEbeCF1F4B4625",
+    "WorldIDVerifier": "0xedd0bb0F06a2c12DC502165d98fbbba6701a12Ba",
+    "AegisExecutionManager": "0xC65d65A48cB24CA9bd6df02Ea83Ef44571E5594c",
+    "AegisSwapVMAdapter": "0xc2CA4DB9A01367fA06F56dcf8681993b517D19f1",
+    "AegisUniswapV4Hook": "0x0F491f0D3CfB919A259E69F974Ae772912f13B2e"
+  },
+  "timestamp": "2026-09-26T05:50:24.884Z"
+}

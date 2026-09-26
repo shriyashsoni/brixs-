@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>AegisNet — Protocol Whitepaper v1.0</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cg transform='rotate(-30 12 12)'%3E%3Ccircle cx='7.3' cy='3.2' r='1.45'/%3E%3Crect x='5.5' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Crect x='14.9' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Ccircle cx='16.7' cy='20.8' r='1.45'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+html, body { background: #000000 !important; color: #ffffff; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Instrument+Serif:ital@1&display=swap">
+<style>
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #9a9a9a;
+  --stat: #d8d8d8;
+  --border: rgba(255, 255, 255, 0.16);
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --panel: rgba(255, 255, 255, 0.03);
+  --ok: #7ee2a8;
+  --warn: #f2c46b;
+  --bad: #ff7a7a;
+  --info: #a9c4ff;
+  --ui: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", Times, serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ui);
+  font-size: 15px;
+  line-height: 1.7;
+  color: #e0e0e0;
+  background: #000000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: #a9c4ff; text-decoration: none; transition: color 0.2s ease; }
+a:hover { color: #ffffff; text-decoration: underline; }
+
+.grain {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+  background-image:
+    repeating-radial-gradient(circle at 17% 32%, rgba(255,255,255,0.5) 0 0.5px, transparent 0.5px 2px),
+    repeating-radial-gradient(circle at 73% 68%, rgba(255,255,255,0.4) 0 0.5px, transparent 0.5px 3px);
+}
+
+/* Header */
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 40px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.logo { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #fff; }
+.logo svg { width: 22px; height: 22px; }
+.logo-suffix { font-weight: 400; color: #9a9a9a; }
+.logo-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-soft); color: #cfcfcf; }
+
+.nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+.nav-links a { color: #cfcfcf; }
+.nav-links a:hover { color: #fff; text-decoration: none; }
+
+.btn-launch {
+  padding: 8px 18px; border-radius: 6px; font-size: 13.5px; font-weight: 500;
+  background: linear-gradient(180deg, #fff 0%, #e7e7e7 100%); color: #111;
+  box-shadow: 0 0 16px rgba(255,255,255,0.15); transition: all 0.25s ease;
+}
+.btn-launch:hover { background: #fff; color: #000; box-shadow: 0 0 24px rgba(255,255,255,0.3); text-decoration: none; }
+
+/* Layout */
+.wp-container {
+  max-width: 1100px; margin: 0 auto; padding: 60px 30px 120px;
+  display: grid; grid-template-columns: 260px 1fr; gap: 60px;
+}
+
+.wp-sidebar {
+  position: sticky; top: 100px; height: fit-content;
+  display: flex; flex-direction: column; gap: 12px; font-size: 13.5px;
+}
+.wp-sidebar h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+.wp-sidebar a { color: #9a9a9a; padding: 6px 12px; border-radius: 6px; border-left: 2px solid transparent; }
+.wp-sidebar a:hover, .wp-sidebar a.is-active { color: #ffffff; background: rgba(255,255,255,0.04); border-left-color: var(--info); text-decoration: none; }
+
+.wp-content { display: flex; flex-direction: column; gap: 48px; }
+.wp-meta { display: flex; align-items: center; gap: 16px; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.wp-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+h1 { font-size: 42px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; color: #fff; margin-bottom: 16px; }
+h1 em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--muted); }
+h2 { font-size: 26px; font-weight: 500; letter-spacing: -0.02em; color: #fff; margin-top: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--border-soft); padding-bottom: 10px; }
+h3 { font-size: 19px; font-weight: 500; color: #f0f0f0; margin-top: 14px; margin-bottom: 10px; }
+p { margin-bottom: 16px; color: #cccccc; }
+
+.callout {
+  padding: 20px 24px; border-radius: 10px; border: 1px solid var(--border-soft);
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  margin: 20px 0;
+}
+.callout-title { font-weight: 600; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.callout-info { border-color: rgba(169, 196, 255, 0.3); background: rgba(169, 196, 255, 0.04); }
+.callout-warn { border-color: rgba(242, 196, 107, 0.3); background: rgba(242, 196, 107, 0.04); }
+
+.code-block {
+  font-family: var(--mono); font-size: 13px; padding: 20px; border-radius: 10px;
+  background: #080808; border: 1px solid rgba(255,255,255,0.1); color: #d8d8d8;
+  overflow-x: auto; margin: 20px 0; line-height: 1.6;
+}
+
+.spec-table {
+  width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13.5px;
+}
+.spec-table th, .spec-table td {
+  padding: 12px 16px; border: 1px solid var(--border-soft); text-align: left;
+}
+.spec-table th { background: rgba(255,255,255,0.04); color: #fff; font-weight: 500; }
+
+@media (max-width: 900px) {
+  .wp-container { grid-template-columns: 1fr; }
+  .wp-sidebar { display: none; }
+  h1 { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="header">
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <g transform="rotate(-30 12 12)">
+        <circle cx="7.3" cy="3.2" r="1.45"/>
+        <rect x="5.5" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <rect x="14.9" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <circle cx="16.7" cy="20.8" r="1.45"/>
+      </g>
+    </svg>
+    <span>Aegis<span class="logo-suffix">Net</span></span>
+    <span class="logo-badge">Whitepaper</span>
+  </a>
+
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="docs.html">Docs</a>
+    <a href="app.html">Console</a>
+    <a href="app.html" class="btn-launch">Launch App</a>
+  </nav>
+</header>
+
+<div class="wp-container">
+  <aside class="wp-sidebar">
+    <h4>Contents</h4>
+    <a href="#abstract">1. Abstract & Problem</a>
+    <a href="#identity">2. ENSv2 EAC Identity</a>
+    <a href="#biometrics">3. World ID Biometrics</a>
+    <a href="#swapvm">4. 1inch SwapVM Routing</a>
+    <a href="#uniswap">5. Uniswap v4 Hook</a>
+    <a href="#math">6. Cryptographic Formalisms</a>
+    <a href="#security">7. Threat Model</a>
+    <a href="#roadmap">8. Roadmap & Specs</a>
+  </aside>
+
+  <main class="wp-content">
+    <div>
+      <div class="wp-meta">
+        <span>📄 Protocol Specification v1.0.4</span>
+        <span>•</span>
+        <span>Published September 2026</span>
+        <span>•</span>
+        <span>AegisNet Research Group</span>
+      </div>
+
+      <h1>Operational AI Infrastructure & <em>Autonomous DeFi Safeguards</em></h1>
+      <p style="font-size:17px; color:#e0e0e0; margin-top:12px;">
+        A technical architecture unifying autonomous AI agent execution with ENSv2 Hierarchical Identity, Zero-Knowledge World ID Biometric 2FA, 1inch SwapVM Opcode Positioning, and Uniswap v4 Agent-Gated Liquidity.
+      </p>
+    </div>
+
+    <!-- Section 1 -->
+    <section id="abstract">
+      <h2>1. Abstract & Problem Statement</h2>
+      <p>
+        The rapid emergence of autonomous AI agents operating on public blockchain networks introduces the <strong>Web3 AI Agent Trust Trilemma</strong>:
+      </p>
+      <div class="callout callout-warn">
+        <div class="callout-title">⚠️ The Web3 AI Agent Trust Trilemma</div>
+        <ol style="margin-left: 20px; line-height: 1.8;">
+          <li><strong>Key Compromise Risk:</strong> Exposing private keys to autonomous agent loops risks catastrophic loss of capital if the model is exploited or prompt-injected.</li>
+          <li><strong>Absence of Verifiable Human Intent:</strong> Onchain smart contracts cannot natively distinguish between an autonomous routine check and a high-stakes unauthorized drain.</li>
+          <li><strong>Fragmented DeFi Execution:</strong> Traditional DEX interfaces require manual multi-step transactions, incompatible with microsecond multi-hop agent strategy execution.</li>
+        </ol>
+      </div>
+      <p>
+        <strong>AegisNet</strong> solve this trilemma by introducing a zero-friction, multi-layer security matrix. Agents are assigned granular, revocable identity subnames under root ENS namespaces (`agent1.shriyash.eth`), restricted by contract-level Enhanced Access Control (EAC), and gated by Zero-Knowledge World ID biometric 2FA whenever transaction values exceed configurable thresholds (e.g. $1,000 USD).
+      </p>
+    </section>
+
+    <!-- Section 2 -->
+    <section id="identity">
+      <h2>2. ENSv2 & Enhanced Access Control (EAC)</h2>
+      <p>
+        AegisNet leverages ENSv2 to create hierarchical agent namespaces. The root owner (e.g., `aegisnet.eth`) delegates agent subnames (`agent1.shriyash.eth`) using `AegisSubnameRegistry.sol`.
+      </p>
+      <p>
+        Each subname is linked to an <code>AgentPermissions</code> record containing strict onchain parameters:
+      </p>
+      <ul style="margin-left: 24px; margin-bottom: 16px; color:#cccccc;">
+        <li><code>biometricThresholdUSD</code>: Dollar threshold (in 18-decimal precision) triggering mandatory biometric verification.</li>
+        <li><code>dailySpendingLimit</code>: Aggregated 24-hour spending cap.</li>
+        <li><code>whitelistedTargets</code>: Approved target contract routers (e.g., 1inch SwapVM Router, Uniswap v4 Pools).</li>
+        <li><code>textRecords</code>: ENSIP-26 key-value pairs defining <code>agent.capabilities</code> and operational metadata.</li>
+      </ul>
+
+      <div class="code-block">
+struct AgentPermissions {
+    bytes32 subnameNode;
+    string subname;
+    address agentAddress;
+    address ownerAddress;
+    uint256 biometricThresholdUSD;
+    bool isActive;
+    uint256 dailySpendingLimit;
+    uint256 currentDailySpent;
+    uint256 lastSpentTimestamp;
+}
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section id="biometrics">
+      <h2>3. World ID Zero-Knowledge Biometric Interception</h2>
+      <p>
+        When an agent requests execution via <code>AegisExecutionManager.sol</code>, the contract evaluates the transaction value against the agent's threshold. If <code>valueUSD &gt;= biometricThresholdUSD</code>, the transaction is intercepted and placed into a pending state.
+      </p>
+      <div class="callout callout-info">
+        <div class="callout-title">🔒 Biometric Interception Flow</div>
+        <p>
+          1. Agent submits proposed transaction payload.<br>
+          2. Contract emits <code>ExecutionRequested(requestId, requiresBiometrics = true)</code>.<br>
+          3. Operator scans World ID QR code or biometric prompt (Orb / Selfie Check).<br>
+          4. Zero-knowledge proof (Semaphore protocol) is generated with <code>signal = requestId</code>.<br>
+          5. Proof is verified onchain via <code>IWorldID.verifyProof()</code> or signed by an authorized relayer.<br>
+          6. Transaction transitions to <code>isVerified = true</code> and executes automatically.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 4 -->
+    <section id="swapvm">
+      <h2>4. 1inch SwapVM & Aqua Protocol Opcode Routing</h2>
+      <p>
+        AegisNet integrates 1inch SwapVM custom opcodes to achieve atomic, multi-step DEX swaps and automated yield farming position management.
+      </p>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Opcode</th>
+            <th>Byte Code</th>
+            <th>Description & Execution Target</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>OP_EXCHANGE_SWAP</code></td>
+            <td><code>0x01</code></td>
+            <td>Atomic multi-token DEX swap through 1inch Aggregation Router v6.</td>
+          </tr>
+          <tr>
+            <td><code>OP_SPLIT_ROUTE</code></td>
+            <td><code>0x02</code></td>
+            <td>Splits trade volume across parallel liquidity pools to minimize slippage.</td>
+          </tr>
+          <tr>
+            <td><code>OP_AQUA_DEPOSIT</code></td>
+            <td><code>0x05</code></td>
+            <td>Deposits agent capital into 1inch Aqua yield positioning strategy.</td>
+          </tr>
+          <tr>
+            <td><code>OP_AQUA_WITHDRAW</code></td>
+            <td><code>0x06</code></td>
+            <td>Rebalances position and harvests accumulated yield back to vault.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Section 5 -->
+    <section id="uniswap">
+      <h2>5. Uniswap v4 Agent-Gated Hook</h2>
+      <p>
+        <code>AegisUniswapV4Hook.sol</code> attaches to Uniswap v4 pools, implementing the <code>beforeSwap</code> hook callback. When a swap is attempted, the hook verifies that the caller originates from an authorized <code>AegisExecutionManager</code> transaction for a valid ENS subname, blocking frontrunning bots and unverified MEV searchers.
+      </p>
+    </section>
+
+    <!-- Section 6 -->
+    <section id="math">
+      <h2>6. Cryptographic Formalisms</h2>
+      <p>
+        Let \( S \in \{0,1\}^{256} \) be the root node hash \( \text{keccak256}(\text{bytes32}(0), \text{keccak256}(\text{"aegisnet.eth"})) \). For any subname label \( l \), the agent subname node is:
+      </p>
+      <p style="text-align: center; font-size: 16px; margin: 16px 0; color: #a9c4ff;">
+        \( N_{\text{agent}} = \text{keccak256}(S \mathbin{\Vert} \text{keccak256}(l)) \)
+      </p>
+      <p>
+        For transaction value \( V_{\text{USD}} \), execution permission \( P_{\text{exec}} \) is defined by:
+      </p>
+      <p style="text-align: center; font-size: 16px; margin: 16px 0; color: #7ee2a8;">
+        \( P_{\text{exec}} = \mathbb{I}\left(V_{\text{USD}} < T_{\text{bio}}\right) \lor \left(\mathbb{I}\left(V_{\text{USD}} \ge T_{\text{bio}}\right) \land \text{VerifyZKProof}(\pi, \text{nullifierHash}, N_{\text{request}})\right) \)
+      </p>
+    </section>
+
+    <!-- Section 7 -->
+    <section id="security">
+      <h2>7. Threat Model & Security Assurance</h2>
+      <p>
+        The protocol is engineered to resist private key leakages, prompt injection attacks, replay attacks, and unauthorized contract calls:
+      </p>
+      <ul style="margin-left: 24px; color: #cccccc; line-height: 1.8;">
+        <li><strong>Nullifier Tracking:</strong> Used nullifiers are recorded in mapping <code>usedNullifiers</code>, preventing proof reuse across requests.</li>
+        <li><strong>Target Whitelisting:</strong> Agents can only execute calls against explicitly whitelisted contracts.</li>
+        <li><strong>Daily Cap Rolling Window:</strong> 24-hour spending resets prevent cumulative capital depletion.</li>
+      </ul>
+    </section>
+
+    <!-- Section 8 -->
+    <section id="roadmap">
+      <h2>8. Deployed Contracts & Roadmap</h2>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th>Contract Name</th>
+            <th>Sepolia Testnet Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>AegisSubnameRegistry</code></td>
+            <td><code>0x09FfDB167F80fF9E4C5BE64C24bEbeCF1F4B4625</code></td>
+          </tr>
+          <tr>
+            <td><code>AegisExecutionManager</code></td>
+            <td><code>0xC65d65A48cB24CA9bd6df02Ea83Ef44571E5594c</code></td>
+          </tr>
+          <tr>
+            <td><code>AegisSwapVMAdapter</code></td>
+            <td><code>0xc2CA4DB9A01367fA06F56dcf8681993b517D19f1</code></td>
+          </tr>
+          <tr>
+            <td><code>AegisUniswapV4Hook</code></td>
+            <td><code>0x0F491f0D3CfB919A259E69F974Ae772912f13B2e</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
+</body>
+</html>

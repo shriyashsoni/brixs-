@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>AegisNet — Developer Documentation</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cg transform='rotate(-30 12 12)'%3E%3Ccircle cx='7.3' cy='3.2' r='1.45'/%3E%3Crect x='5.5' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Crect x='14.9' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Ccircle cx='16.7' cy='20.8' r='1.45'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+html, body { background: #000000 !important; color: #ffffff; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Instrument+Serif:ital@1&display=swap">
+<style>
+:root {
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #9a9a9a;
+  --stat: #d8d8d8;
+  --border: rgba(255, 255, 255, 0.16);
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --panel: rgba(255, 255, 255, 0.03);
+  --ok: #7ee2a8;
+  --warn: #f2c46b;
+  --bad: #ff7a7a;
+  --info: #a9c4ff;
+  --ui: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", "Times New Roman", Times, serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ui);
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #e0e0e0;
+  background: #000000;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: #a9c4ff; text-decoration: none; }
+a:hover { color: #fff; text-decoration: underline; }
+
+.grain {
+  position: fixed; inset: 0; z-index: 100; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+  background-image:
+    repeating-radial-gradient(circle at 17% 32%, rgba(255,255,255,0.5) 0 0.5px, transparent 0.5px 2px),
+    repeating-radial-gradient(circle at 73% 68%, rgba(255,255,255,0.4) 0 0.5px, transparent 0.5px 3px);
+}
+
+.header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px; background: rgba(0,0,0,0.85); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.logo { display: inline-flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; color: #fff; }
+.logo svg { width: 22px; height: 22px; }
+.logo-badge { font-size: 11px; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-soft); color: #cfcfcf; }
+
+.nav-links { display: flex; align-items: center; gap: 20px; font-size: 14px; }
+.nav-links a { color: #cfcfcf; }
+.btn-launch {
+  padding: 8px 18px; border-radius: 6px; font-size: 13.5px; font-weight: 500;
+  background: linear-gradient(180deg, #fff 0%, #e7e7e7 100%); color: #111;
+}
+
+.docs-container {
+  max-width: 1200px; margin: 0 auto; padding: 40px 30px 100px;
+  display: grid; grid-template-columns: 280px 1fr; gap: 50px;
+}
+
+.docs-sidebar {
+  position: sticky; top: 90px; height: fit-content;
+  display: flex; flex-direction: column; gap: 16px; font-size: 13.5px;
+}
+.docs-group h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+.docs-group nav { display: flex; flex-direction: column; gap: 4px; }
+.docs-group a { color: #9a9a9a; padding: 6px 12px; border-radius: 6px; border-left: 2px solid transparent; }
+.docs-group a:hover, .docs-group a.is-active { color: #fff; background: rgba(255,255,255,0.04); border-left-color: var(--info); text-decoration: none; }
+
+.docs-content { display: flex; flex-direction: column; gap: 48px; }
+
+h1 { font-size: 38px; font-weight: 500; letter-spacing: -0.02em; color: #fff; margin-bottom: 12px; }
+h2 { font-size: 24px; font-weight: 500; color: #fff; margin-top: 16px; border-bottom: 1px solid var(--border-soft); padding-bottom: 8px; }
+h3 { font-size: 18px; font-weight: 500; color: #e8e8e8; margin-top: 14px; margin-bottom: 8px; }
+
+.badge-method { display: inline-block; padding: 3px 8px; border-radius: 4px; font-family: var(--mono); font-size: 12px; font-weight: 600; margin-right: 8px; }
+.badge-get { background: rgba(126, 226, 168, 0.15); color: var(--ok); border: 1px solid rgba(126, 226, 168, 0.3); }
+.badge-post { background: rgba(169, 196, 255, 0.15); color: var(--info); border: 1px solid rgba(169, 196, 255, 0.3); }
+
+.code-block {
+  font-family: var(--mono); font-size: 13px; padding: 18px 20px; border-radius: 8px;
+  background: #080808; border: 1px solid rgba(255,255,255,0.1); color: #d8d8d8;
+  overflow-x: auto; margin: 16px 0; line-height: 1.6;
+}
+
+.api-card {
+  border: 1px solid var(--border-soft); border-radius: 10px; padding: 20px;
+  background: rgba(255,255,255,0.02); margin: 20px 0;
+}
+.api-endpoint { font-family: var(--mono); font-size: 15px; color: #fff; margin-bottom: 10px; display: flex; align-items: center; }
+
+@media (max-width: 900px) {
+  .docs-container { grid-template-columns: 1fr; }
+  .docs-sidebar { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="header">
+  <a href="index.html" class="logo">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <g transform="rotate(-30 12 12)">
+        <circle cx="7.3" cy="3.2" r="1.45"/>
+        <rect x="5.5" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <rect x="14.9" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <circle cx="16.7" cy="20.8" r="1.45"/>
+      </g>
+    </svg>
+    <span>Aegis<span class="logo-suffix">Net</span></span>
+    <span class="logo-badge">Developer Documentation</span>
+  </a>
+
+  <nav class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="whitepaper.html">Whitepaper</a>
+    <a href="app.html">Console</a>
+    <a href="app.html" class="btn-launch">Launch App</a>
+  </nav>
+</header>
+
+<div class="docs-container">
+  <aside class="docs-sidebar">
+    <div class="docs-group">
+      <h4>Getting Started</h4>
+      <nav>
+        <a href="#overview">Overview</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#flow">How a trade flows</a>
+        <a href="#architecture">Architecture</a>
+      </nav>
+    </div>
+    <div class="docs-group">
+      <h4>REST API</h4>
+      <nav>
+        <a href="#api-health">GET /api/health</a>
+        <a href="#api-agent">POST /api/agent/propose</a>
+        <a href="#api-wid">POST /api/worldid/attest</a>
+        <a href="#api-exec">GET /api/execution/requests</a>
+        <a href="#api-ens">GET /api/ens/…</a>
+        <a href="#api-admin">Admin routes</a>
+      </nav>
+    </div>
+    <div class="docs-group">
+      <h4>Smart Contracts</h4>
+      <nav>
+        <a href="#contract-registry">AegisSubnameRegistry</a>
+        <a href="#contract-manager">AegisExecutionManager</a>
+        <a href="#contract-swapvm">AegisSwapVMAdapter</a>
+      </nav>
+    </div>
+  </aside>
+
+  <main class="docs-content">
+    <div>
+      <h1>AegisNet Documentation</h1>
+      <p style="font-size:16px; color:#9a9a9a;">
+        Build and run guardrailed AI trading agents on Ethereum: ENS identities with onchain limits, Claude strategy planning, World ID approval for large trades, and 1inch SwapVM routing with an agent-gated Uniswap v4 hook.
+      </p>
+    </div>
+
+    <section id="overview">
+      <h2>Overview</h2>
+      <p>
+        Each agent gets a name under the root ENS name (for example <code>agent1.shriyash.eth</code>) in <code>AegisSubnameRegistry</code>, with an owner, a whitelist of contracts it may call, a daily spending limit and an approval threshold. <code>AegisExecutionManager</code> enforces all of these onchain. Trades at or above the threshold pause until the owner proves they are a real human with World ID.
+      </p>
+      <p>
+        Users sign every onchain action with their own wallet. The backend never holds user keys: it plans strategies with Claude, verifies World ID proofs and signs the relayer attestation the contract trusts, and indexes contract events.
+      </p>
+    </section>
+
+    <section id="quickstart">
+      <h2>Quickstart</h2>
+      <h3>1. Install</h3>
+      <div class="code-block">
+cd contracts &amp;&amp; npm install
+cd ../backend &amp;&amp; npm install
+cp .env.example .env   # fill in RPC, relayer key, World ID app, optional Claude key
+      </div>
+
+      <h3>2. Test</h3>
+      <div class="code-block">
+cd contracts &amp;&amp; npm test                # contract unit tests
+cd ../backend &amp;&amp; npm run test:e2e      # full user flow on a local chain (see README)
+      </div>
+
+      <h3>3. Run</h3>
+      <div class="code-block">
+cd backend
+npm run build &amp;&amp; npm start
+# App, console and API on http://localhost:4000
+      </div>
+
+      <h3>4. Deploy</h3>
+      <div class="code-block">
+docker build -t aegisnet .
+docker run -p 4000:4000 --env-file backend/.env -e NODE_ENV=production -v aegis-data:/app/data aegisnet
+      </div>
+    </section>
+
+    <section id="flow">
+      <h2>How a trade flows</h2>
+      <div class="code-block">
+1. Plan      POST /api/agent/propose            → Claude plan + encoded SwapVM calldata
+2. Submit    agent wallet → requestExecution(adapter, calldata, valueUSD)
+             · under the threshold: executes in the same transaction
+             · at or above: ExecutionRequested(requiresBiometrics = true)
+3. Verify    owner scans with World App (IDKit, signal = requestId)
+             POST /api/worldid/attest           → relayer signature + per-request nullifier
+4. Approve   owner wallet → verifyBiometricsWithRelayer(requestId, nullifier, signature)
+5. Execute   owner wallet → executeVerifiedTransaction(requestId)
+   or Cancel owner/agent wallet → cancelExecution(requestId)
+      </div>
+    </section>
+
+    <section id="architecture">
+      <h2>Architecture</h2>
+      <div class="code-block">
+Browser (landing + console)
+  ├─ wallet (EIP-6963) ──── signs ───► AegisSubnameRegistry · AegisExecutionManager · AegisUniswapV4Hook
+  └─ World ID widget (IDKit)
+        │
+        ▼
+Backend (Node/Express, one container)
+  ├─ Claude planner  ─ plan only; calldata built by deterministic code
+  ├─ World ID gate   ─ proof check · one human per owner · relayer signature
+  └─ Chain indexer   ─ contract events → activity & agents
+      </div>
+    </section>
+
+    <section id="api-health">
+      <h2>REST API</h2>
+
+      <div class="api-card">
+        <div class="api-endpoint"><span class="badge-method badge-get">GET</span> /api/health</div>
+        <p>Chain, relayer check, contracts, World ID settings, AI planner and indexer status.</p>
+        <div class="code-block">
+{
+  "status": "online",
+  "network": "Sepolia",
+  "relayer": { "address": "0x…", "matchesContract": true },
+  "worldId": { "appId": "app_…", "action": "agent-high-value-auth", "verifyMode": "cloud" },
+  "ai": { "enabled": true, "model": "claude-opus-5" },
+  "indexer": { "cursor": 7234567, "synced": true },
+  "contracts": { "AegisSubnameRegistry": "0x09Ff…4625", "AegisExecutionManager": "0xC65d…594c" }
+}
+        </div>
+      </div>
+
+      <div class="api-card" id="api-agent">
+        <div class="api-endpoint"><span class="badge-method badge-post">POST</span> /api/agent/propose</div>
+        <p>Plans a strategy for an agent and returns the calldata its wallet submits. Nothing is sent onchain. Rate limited.</p>
+        <div class="code-block">
+// Request
+{ "agentAddress": "0x…", "goalPrompt": "Swap USDC to ETH at the best price", "amountUSD": 2500 }
+
+// Response (abridged)
+{
+  "proposal": {
+    "planner": "claude", "summary": "Swap $2,500 of USDC into ETH via 1inch…",
+    "strategyType": "split_swap", "requiresBiometric2FA": true,
+    "authorization": { "isAllowed": true, "requiresBiometrics": true },
+    "dailyLimit": { "limitUSD": 50000, "remainingUSD": 47250, "exceeds": false }
+  },
+  "targetContract": "0xc2CA…19f1",
+  "encodedCallData": "0x…"
+}
+        </div>
+      </div>
+
+      <div class="api-card" id="api-wid">
+        <div class="api-endpoint"><span class="badge-method badge-post">POST</span> /api/worldid/attest</div>
+        <p>Takes the IDKit success result for a paused request. Checks the request onchain, verifies the proof with World's API, enforces one human per owner and the daily limit, and returns the attestation for <code>verifyBiometricsWithRelayer</code>. Rate limited.</p>
+        <div class="code-block">
+// Request
+{ "requestId": "0x…", "proof": "0x…", "merkle_root": "0x…", "nullifier_hash": "0x…", "verification_level": "device" }
+
+// Response
+{ "nullifierHash": "4417…", "signature": "0x…", "owner": "0x…", "newlyBound": false }
+        </div>
+      </div>
+
+      <div class="api-card" id="api-exec">
+        <div class="api-endpoint"><span class="badge-method badge-get">GET</span> /api/execution/requests?agent=&amp;owner=</div>
+        <p>Every request on the manager, built from chain events, with status <code>PENDING_BIOMETRICS</code>, <code>BIOMETRICS_VERIFIED</code>, <code>EXECUTED</code> or <code>CANCELLED</code> and all transaction hashes. <code>POST /api/execution/refresh</code> indexes the latest block right away.</p>
+      </div>
+
+      <div class="api-card" id="api-ens">
+        <div class="api-endpoint"><span class="badge-method badge-get">GET</span> /api/ens/permissions/:agent · /api/ens/agents?owner= · /api/ens/text-record/:node/:key</div>
+        <p>Live agent limits read from the registry, agents an address owns (from events), and ENSIP-26 text records. <code>GET /api/uniswap/pools/:poolId</code> reads hook gating.</p>
+      </div>
+
+      <div class="api-card" id="api-admin">
+        <div class="api-endpoint"><span class="badge-method badge-post">POST</span> Admin routes</div>
+        <p>For bots and scripts whose agent key is the backend wallet: <code>/api/agent/execute</code>, <code>/api/ens/*</code> writes, <code>/api/execution/:id/execute|cancel</code> and <code>/api/uniswap/pools/gate</code>. In production they need the <code>x-api-key</code> header (<code>ADMIN_API_KEY</code>) and are disabled without it.</p>
+      </div>
+    </section>
+
+    <section id="contract-registry">
+      <h2>Smart Contracts</h2>
+
+      <h3>AegisSubnameRegistry.sol</h3>
+      <p>Agent identities, owners, whitelists, limits and ENSIP-26 text records. The caller of <code>registerSubname</code> becomes the owner.</p>
+      <div class="code-block">
+function registerSubname(string subnameLabel, address agentAddress, uint256 biometricThresholdUSD, uint256 dailySpendingLimit) returns (bytes32);
+function setTargetContractWhitelist(bytes32 node, address target, bool allowed);   // owner
+function updateBiometricThreshold(bytes32 node, uint256 thresholdUSD);            // owner
+function revokeSubname(bytes32 node);                                             // owner
+function isAgentAuthorized(address agent, address target, uint256 valueUSD) view returns (bool, bool, bytes32);
+      </div>
+
+      <h3 id="contract-manager">AegisExecutionManager.sol</h3>
+      <p>Checks the caller is an authorized agent, holds trades at or above the threshold, and executes after a relayer-attested World ID approval.</p>
+      <div class="code-block">
+function requestExecution(address target, bytes callData, uint256 valueUSD) returns (bytes32 requestId, bool requiresBiometrics);
+function verifyBiometricsWithRelayer(bytes32 requestId, uint256 nullifierHash, bytes signature);
+function executeVerifiedTransaction(bytes32 requestId);
+function cancelExecution(bytes32 requestId);   // owner, agent or protocol owner
+      </div>
+
+      <h3 id="contract-swapvm">AegisSwapVMAdapter.sol</h3>
+      <p>Executes SwapVM instruction lists (only callable by the manager): <code>0x01</code> swap, <code>0x02</code> split route, <code>0x03</code> minimum-output check, <code>0x04</code> Uniswap v4 hop, <code>0x05/0x06</code> Aqua deposit and rebalance. Output amounts are computed by the adapter; routing into real DEX liquidity is on the roadmap.</p>
+    </section>
+  </main>
+</div>
+</body>
+</html>

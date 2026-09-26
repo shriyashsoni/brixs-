@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Console — AegisNet</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cg transform='rotate(-30 12 12)'%3E%3Ccircle cx='7.3' cy='3.2' r='1.45'/%3E%3Crect x='5.5' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Crect x='14.9' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Ccircle cx='16.7' cy='20.8' r='1.45'/%3E%3C/g%3E%3C/svg%3E">
+<style>html, body { background: #000000 !important; color: #ffffff; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Instrument+Serif:ital@1&display=swap">
+<link rel="stylesheet" href="app.css">
+</head>
+<body style="background:#000;color:#fff">
+<div class="grain" aria-hidden="true"></div>
+<div class="glow" aria-hidden="true"></div>
+<div class="menu-backdrop" aria-hidden="true"></div>
+
+<header class="header">
+  <a class="logo" href="index.html" aria-label="AegisNet home">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <g transform="rotate(-30 12 12)">
+        <circle cx="7.3" cy="3.2" r="1.45"/>
+        <rect x="5.5" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <rect x="14.9" y="4.7" width="3.6" height="14.6" rx="1.8"/>
+        <circle cx="16.7" cy="20.8" r="1.45"/>
+      </g>
+    </svg>
+    <span>Aegis<span class="logo-suffix">Net</span></span>
+    <span class="logo-tag">Sepolia</span>
+  </a>
+
+  <nav id="site-nav" aria-label="Console">
+    <a href="#overview" data-tab="overview">Dashboard</a>
+    <a href="#agents" data-tab="agents">Agents</a>
+    <a href="#strategy" data-tab="strategy">AI Strategy</a>
+    <a href="#execute" data-tab="execute">Trade</a>
+    <a href="#activity" data-tab="activity">Activity <span class="nav-count" id="nav-count" hidden>0</span></a>
+  </nav>
+
+  <div class="header-right">
+    <span class="api-chip" id="api-chip" title="Backend status"><i></i><span>Connecting…</span></span>
+    <button class="btn btn-ghost" id="wallet-btn" type="button">Connect wallet</button>
+  </div>
+
+  <button class="burger" type="button" aria-controls="site-nav" aria-expanded="false" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="guard" id="guard" hidden></div>
+
+<main class="console">
+
+  <!-- ================= DASHBOARD ================= -->
+  <section class="tab" id="tab-overview" data-tab="overview">
+
+    <div class="dash-hero">
+      <div class="dash-hero-copy">
+        <span class="badge">
+          <svg class="badge-star" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12 2.6C12.55 2.6 12.88 3.15 13.08 4.7c.62 4.7 1.52 5.6 6.22 6.22 1.55.2 2.1.53 2.1 1.08s-.55.88-2.1 1.08c-4.7.62-5.6 1.52-6.22 6.22-.2 1.55-.53 2.1-1.08 2.1s-.88-.55-1.08-2.1c-.62-4.7-1.52-5.6-6.22-6.22C3.15 12.88 2.6 12.55 2.6 12s.55-.88 2.1-1.08c4.7-.62 5.6-1.52 6.22-6.22C11.12 3.15 11.45 2.6 12 2.6Z"/></svg>
+          Live on Ethereum Sepolia
+        </span>
+        <h1>Your AI agent's <em>control room</em>.</h1>
+        <p class="lede">Your agent trades on its own. Small trades go through automatically, big ones wait for you to prove you're human with World ID, and you can stop it at any time. Every action here is a real Sepolia transaction.</p>
+      </div>
+
+      <div class="wallet-card" id="wallet-card">
+        <div class="wallet-card-body" id="wallet-card-body">
+          <span class="kpi-label">Wallet</span>
+          <strong class="wallet-card-title">Not connected</strong>
+          <p class="hint">Connect a wallet on Sepolia to start.</p>
+        </div>
+        <div class="wallet-card-actions" id="wallet-card-actions">
+          <button class="btn btn-solid" type="button" data-connect>Connect wallet</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="idea">
+      <div class="idea-card">
+        <span class="idea-n">1 · The problem</span>
+        <h3>AI agents hold the keys</h3>
+        <p>To trade for you, an AI agent needs a wallet key. If it's buggy, hacked or tricked, it can empty that wallet in seconds, and nobody has to approve anything.</p>
+      </div>
+      <div class="idea-arrow" aria-hidden="true">→</div>
+      <div class="idea-card">
+        <span class="idea-n">2 · The fix</span>
+        <h3>A name, limits, and a human</h3>
+        <p>AegisNet gives each agent an <strong>ENS name</strong> with hard limits written onchain, <strong>Claude</strong> plans each trade in plain English, and big trades need a real person's <strong>World ID</strong>.</p>
+      </div>
+      <div class="idea-arrow" aria-hidden="true">→</div>
+      <div class="idea-card idea-card--result">
+        <span class="idea-n">3 · The result</span>
+        <h3>Safe autonomy</h3>
+        <ul class="idea-list">
+          <li><span class="s-ok">●</span> Small trades run by themselves</li>
+          <li><span class="s-pending">●</span> Big trades wait for your approval</li>
+          <li><span class="s-cancelled">●</span> Bad trades get blocked or cancelled</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel demo">
+      <div class="panel-head demo-head">
+        <div>
+          <h2>Walkthrough: see it work in 5 steps</h2>
+          <p class="hint">Every step is a real transaction on Sepolia, signed by your wallet. Each takes about 15 seconds.</p>
+        </div>
+      </div>
+
+      <ol class="steps-demo" id="demo-steps">
+        <li data-step="wallet">
+          <span class="sd-check"></span>
+          <div class="sd-body">
+            <strong>Connect a wallet with Sepolia ETH</strong>
+            <p id="step-wallet-text">You are the owner. You need a little Sepolia test ETH for gas.</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-connect>Connect</button>
+        </li>
+        <li data-step="identity">
+          <span class="sd-check"></span>
+          <div class="sd-body">
+            <strong>Give your agent an identity</strong>
+            <p id="step-identity-text">Register an ENS name for your agent with a daily limit and an approval threshold. Three wallet confirmations.</p>
+          </div>
+          <a class="btn btn-ghost btn-sm" href="#agents" data-goto-register>Register</a>
+        </li>
+        <li data-step="small">
+          <span class="sd-check"></span>
+          <div class="sd-body">
+            <strong>A small trade runs by itself</strong>
+            <p id="step-small-text">Claude plans a $250 USDC→ETH swap. It's under the threshold, so it executes in the same transaction.</p>
+          </div>
+          <button class="btn btn-solid btn-sm" type="button" data-scenario="small">Run $250 trade</button>
+        </li>
+        <li data-step="big">
+          <span class="sd-check"></span>
+          <div class="sd-body">
+            <strong>A big trade waits for a human</strong>
+            <p id="step-big-text">The agent tries $2,500. It pauses onchain until you verify with World ID, then executes.</p>
+          </div>
+          <button class="btn btn-solid btn-sm" type="button" data-scenario="big">Run $2,500 trade</button>
+        </li>
+        <li data-step="stop">
+          <span class="sd-check"></span>
+          <div class="sd-body">
+            <strong>Stop a trade you don't like</strong>
+            <p>Start another big trade, then cancel it as the owner. The funds never move.</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" data-scenario="stop">Start &amp; cancel</button>
+        </li>
+      </ol>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head"><h2>My agent</h2><span class="status-pill" id="agent-status" hidden></span></div>
+        <div id="agent-card"><p class="hint">Connect your wallet to see your agent.</p></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Waiting for your approval</h2><a class="btn btn-ghost btn-sm" href="#activity">All activity</a></div>
+        <div class="stat-row" id="dash-stats"></div>
+        <ul class="approvals" id="approvals"><li class="empty">Nothing waiting. Big trades will show up here.</li></ul>
+      </div>
+    </div>
+
+    <div class="section-label">
+      <h2>Where this is used</h2>
+      <p class="hint">Three real situations. Click one to run it on Sepolia.</p>
+    </div>
+    <div class="usecases">
+      <article class="usecase">
+        <span class="uc-tag s-ok">Runs automatically</span>
+        <h3>Treasury autopilot</h3>
+        <p>A DAO's agent rebalances its treasury every day with small trades. They're inside its limits, so they execute right away and nobody has to wake up.</p>
+        <button class="btn btn-ghost btn-sm" type="button" data-scenario="small">Try: $250 rebalance</button>
+      </article>
+      <article class="usecase">
+        <span class="uc-tag s-pending">Needs a human</span>
+        <h3>Whale-size trade</h3>
+        <p>The agent spots an opportunity and wants to move $25,000. AegisNet holds it onchain until the owner proves they're a real person with World ID.</p>
+        <button class="btn btn-ghost btn-sm" type="button" data-scenario="whale">Try: $25,000 swap</button>
+      </article>
+      <article class="usecase">
+        <span class="uc-tag s-cancelled">Blocked</span>
+        <h3>Hacked or buggy agent</h3>
+        <p>An attacker takes over the agent. It can't call contracts outside its whitelist or pass its daily limit, and the owner can revoke it in one click.</p>
+        <a class="btn btn-ghost btn-sm" href="#agents" data-goto-killswitch>Open the kill switch</a>
+      </article>
+    </div>
+
+    <details class="under-hood">
+      <summary>Under the hood: system status, pipeline and contracts</summary>
+
+      <div class="kpis">
+        <div class="kpi"><span class="kpi-label">Backend</span><span class="kpi-value" id="kpi-status">—</span></div>
+        <div class="kpi"><span class="kpi-label">Network</span><span class="kpi-value" id="kpi-network">—</span></div>
+        <div class="kpi"><span class="kpi-label">AI planner</span><span class="kpi-value" id="kpi-ai">—</span></div>
+        <div class="kpi"><span class="kpi-label">World ID</span><span class="kpi-value" id="kpi-worldid">—</span></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi"><span class="kpi-label">Chain indexer</span><span class="kpi-value" id="kpi-indexer">—</span></div>
+        <div class="kpi"><span class="kpi-label">Relayer key</span><span class="kpi-value" id="kpi-relayer">—</span></div>
+        <div class="kpi"><span class="kpi-label">Root ENS</span><span class="kpi-value" id="kpi-root">—</span></div>
+        <div class="kpi"><span class="kpi-label">Default threshold</span><span class="kpi-value" id="kpi-threshold">—</span></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-head"><h2>How a trade flows</h2></div>
+          <ol class="phases">
+            <li><span class="phase-n">I</span><div><strong>Identity &amp; limits</strong><p>The agent's address resolves to its ENS name, whitelist, daily limit and approval threshold in AegisSubnameRegistry.</p></div></li>
+            <li><span class="phase-n">II</span><div><strong>AI plan</strong><p>Claude picks the strategy. Deterministic code encodes it as 1inch SwapVM steps with an agent-gated Uniswap v4 hop.</p></div></li>
+            <li><span class="phase-n">III</span><div><strong>Human check</strong><p>At or above the threshold, AegisExecutionManager holds the trade until the owner's World ID proof is attested.</p></div></li>
+            <li><span class="phase-n">IV</span><div><strong>Onchain execution</strong><p>The manager records the spend and runs the approved route in one transaction.</p></div></li>
+          </ol>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Deployed contracts</h2>
+            <button class="btn btn-ghost btn-sm" type="button" id="refresh-health">Refresh</button>
+          </div>
+          <ul class="contracts" id="contracts"><li class="empty">Waiting for backend…</li></ul>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ================= AGENTS ================= -->
+  <section class="tab" id="tab-agents" data-tab="agents" hidden>
+    <div class="tab-head tab-head--left">
+      <h1>Agent <em>identities</em></h1>
+      <p class="lede">Register ENS names for agents and control what they are allowed to do. You sign every change with your wallet.</p>
+      <p class="explain"><strong>In simple words:</strong> this is the agent's ID card. It gets a name, a daily spending limit and a trade size above which you must approve. You can change the limits or revoke the agent here at any time.</p>
+    </div>
+
+    <div class="grid-2">
+      <form class="panel" id="form-register">
+        <div class="panel-head"><h2>Register an agent</h2></div>
+        <div class="field">
+          <label for="reg-label">Name</label>
+          <div class="input-suffix"><input id="reg-label" name="label" placeholder="agent1" required pattern="[a-z0-9]([a-z0-9-]*[a-z0-9])?" maxlength="63" autocomplete="off"><span class="suffix" data-root>.eth</span></div>
+        </div>
+        <div class="field">
+          <label for="reg-address">Agent address</label>
+          <input id="reg-address" name="agentAddress" class="mono" data-agent placeholder="0x…" required>
+          <p class="hint">Defaults to your connected wallet, so you can trade from this console. For a bot, use the bot's address; it then signs trades with its own key.</p>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="reg-threshold">Needs approval at (USD)</label><input id="reg-threshold" name="biometricThresholdUSD" type="number" min="0" step="any" placeholder="1000"></div>
+          <div class="field"><label for="reg-limit">Daily limit (USD)</label><input id="reg-limit" name="dailySpendingLimitUSD" type="number" min="0" step="any" placeholder="50000"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-solid" type="submit">Register (3 confirmations)</button></div>
+        <ol class="tx-steps" data-txsteps hidden></ol>
+        <div class="result" data-result hidden></div>
+      </form>
+
+      <div class="panel">
+        <div class="panel-head"><h2>My agents</h2><button class="btn btn-ghost btn-sm" type="button" id="refresh-agents">Refresh</button></div>
+        <ul class="agent-list" id="agent-list"><li class="empty">Connect your wallet to see agents you own.</li></ul>
+      </div>
+
+      <form class="panel" id="form-lookup">
+        <div class="panel-head"><h2>Look up any agent</h2></div>
+        <div class="field">
+          <label for="lookup-address">Agent address</label>
+          <input id="lookup-address" name="agentAddress" class="mono" data-agent placeholder="0x…" required>
+        </div>
+        <div class="form-actions"><button class="btn btn-solid" type="submit">Look up</button></div>
+        <div class="result" data-result hidden></div>
+      </form>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Limits &amp; kill switch</h2></div>
+        <form id="form-threshold">
+          <div class="field">
+            <label for="th-node">Agent node</label>
+            <input id="th-node" name="subnameNode" class="mono" data-node placeholder="0x… (filled from My agents)" required>
+          </div>
+          <div class="field">
+            <label for="th-value">New approval threshold (USD)</label>
+            <input id="th-value" name="thresholdUSD" type="number" min="0" step="any" placeholder="1000">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-solid" type="submit">Update threshold</button>
+            <button class="btn btn-ghost btn-danger" type="button" id="revoke-btn">Revoke agent</button>
+          </div>
+          <p class="hint">A threshold of 0 turns the World ID gate off. Revoking removes all of the agent's authority immediately. Only the owner can do either.</p>
+          <div class="result" data-result hidden></div>
+        </form>
+      </div>
+
+      <form class="panel" id="form-whitelist">
+        <div class="panel-head"><h2>Allowed contracts</h2></div>
+        <div class="field">
+          <label for="wl-node">Agent node</label>
+          <input id="wl-node" name="subnameNode" class="mono" data-node placeholder="0x…" required>
+        </div>
+        <div class="field">
+          <label for="wl-target">Target contract</label>
+          <input id="wl-target" name="targetContract" class="mono" placeholder="0x…" required list="contract-list">
+        </div>
+        <label class="toggle"><input type="checkbox" name="isWhitelisted" checked><span></span>Allow this contract</label>
+        <div class="form-actions"><button class="btn btn-solid" type="submit">Update</button></div>
+        <div class="result" data-result hidden></div>
+      </form>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Text records (ENSIP-26)</h2></div>
+        <form id="form-text-set">
+          <div class="field">
+            <label for="tr-node">Agent node</label>
+            <input id="tr-node" name="subnameNode" class="mono" data-node placeholder="0x…" required>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="tr-key">Key</label><input id="tr-key" name="key" placeholder="agent.capabilities" required list="text-keys"></div>
+            <div class="field"><label for="tr-value">Value</label><input id="tr-value" name="value" placeholder="swap,rebalance"></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-solid" type="submit">Set record</button>
+            <button class="btn btn-ghost" type="button" id="text-get">Read</button>
+          </div>
+          <div class="result" data-result hidden></div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Uniswap v4 pool gating</h2></div>
+        <form id="form-pool">
+          <div class="field">
+            <label for="pool-id">Pool ID or label</label>
+            <input id="pool-id" name="poolId" class="mono" placeholder="USDC-WETH or 0x… (bytes32)" required>
+          </div>
+          <label class="toggle"><input type="checkbox" name="isGated" checked><span></span>Agents only (beforeSwap hook)</label>
+          <div class="form-actions">
+            <button class="btn btn-solid" type="submit">Set gating</button>
+            <button class="btn btn-ghost" type="button" id="pool-check">Check status</button>
+          </div>
+          <p class="hint" id="hook-owner-hint">Only the hook owner can change gating.</p>
+          <div class="result" data-result hidden></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= AI STRATEGY ================= -->
+  <section class="tab" id="tab-strategy" data-tab="strategy" hidden>
+    <div class="tab-head tab-head--left">
+      <h1>AI strategy <em>planner</em></h1>
+      <p class="lede">Describe what you want. Claude picks the strategy and explains it, and deterministic code encodes the exact onchain route. Nothing is sent until you trade.</p>
+      <p class="explain"><strong>In simple words:</strong> type a goal like &quot;swap USDC to ETH at the best price&quot;. You get a plain-English plan and whether it will need your World ID approval.</p>
+    </div>
+
+    <div class="grid-side">
+      <form class="panel" id="form-propose">
+        <div class="panel-head"><h2>Your goal</h2><span class="mode-pill" id="planner-badge">Planner</span></div>
+        <div class="field">
+          <label for="pr-address">Agent address</label>
+          <input id="pr-address" name="agentAddress" class="mono" data-agent placeholder="0x…" required>
+        </div>
+        <div class="field">
+          <label for="pr-goal">Goal</label>
+          <textarea id="pr-goal" name="goalPrompt" rows="3" placeholder="Swap USDC to ETH at the best price"></textarea>
+        </div>
+        <div class="field">
+          <label for="pr-amount">Amount (USD)</label>
+          <input id="pr-amount" name="amountUSD" type="number" min="0.01" step="any" placeholder="2500" required>
+        </div>
+        <div class="field-row">
+          <div class="field"><label for="pr-in">Token in (optional)</label><input id="pr-in" name="tokenInSymbol" placeholder="let AI decide"></div>
+          <div class="field"><label for="pr-out">Token out (optional)</label><input id="pr-out" name="tokenOutSymbol" placeholder="let AI decide"></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-solid" type="submit">Plan it</button></div>
+      </form>
+
+      <div class="panel" id="proposal">
+        <div class="panel-head"><h2>Plan</h2></div>
+        <div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h6"/></svg>
+          <p>Describe a goal to see the plan, the onchain route and whether World ID approval will be needed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TRADE ================= -->
+  <section class="tab" id="tab-execute" data-tab="execute" hidden>
+    <div class="tab-head tab-head--left">
+      <h1>Run a <em>trade</em></h1>
+      <p class="lede">Your wallet acts as the agent and submits the trade to AegisExecutionManager on Sepolia.</p>
+      <p class="explain"><strong>In simple words:</strong> watch the checks light up. Under the threshold the trade goes straight through. Over it, it pauses onchain and World ID asks you to confirm you're a real human.</p>
+    </div>
+
+    <div class="grid-side">
+      <form class="panel" id="form-execute">
+        <div class="panel-head"><h2>Trade request</h2></div>
+        <div class="field">
+          <label for="ex-goal">Goal</label>
+          <textarea id="ex-goal" name="goalPrompt" rows="3" placeholder="Swap USDC to ETH at the best price"></textarea>
+        </div>
+        <div class="field">
+          <label for="ex-amount">Amount (USD)</label>
+          <input id="ex-amount" name="amountUSD" type="number" min="0.01" step="any" placeholder="2500" required>
+          <div class="chips" id="amount-chips">
+            <button type="button" data-amount="250">$250</button>
+            <button type="button" data-amount="999">$999</button>
+            <button type="button" data-amount="2500">$2,500</button>
+            <button type="button" data-amount="25000">$25,000</button>
+          </div>
+        </div>
+        <p class="hint" id="gate-hint">Connect your wallet to see your agent's approval threshold.</p>
+        <div class="form-actions"><button class="btn btn-solid" type="submit">Plan &amp; submit</button></div>
+      </form>
+
+      <div class="panel">
+        <div class="panel-head"><h2>Live pipeline</h2><span class="status-pill" id="exec-state" hidden></span></div>
+        <ol class="pipeline" id="pipeline">
+          <li data-step="identity"><span class="dot"></span><div><strong>Identity check</strong><p>Your wallet is a registered, active agent</p></div></li>
+          <li data-step="strategy"><span class="dot"></span><div><strong>AI plan</strong><p>Claude plans the route; code encodes it</p></div></li>
+          <li data-step="submit"><span class="dot"></span><div><strong>Signed &amp; submitted</strong><p>Your wallet sends requestExecution to Sepolia</p></div></li>
+          <li data-step="gate"><span class="dot"></span><div><strong>Human check</strong><p>World ID approval if at or above the threshold</p></div></li>
+          <li data-step="execute"><span class="dot"></span><div><strong>Executed onchain</strong><p>AegisExecutionManager runs the route</p></div></li>
+        </ol>
+        <div class="result" id="exec-result" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACTIVITY ================= -->
+  <section class="tab" id="tab-activity" data-tab="activity" hidden>
+    <div class="tab-head tab-head--left tab-head--row">
+      <div>
+        <h1>Onchain <em>activity</em></h1>
+        <p class="lede">Every trade request on AegisExecutionManager, read directly from Sepolia events.</p>
+        <p class="explain"><strong>In simple words:</strong> every trade any agent tried, and what happened to it. Each row links to the real transaction on Etherscan.</p>
+      </div>
+      <div class="activity-tools">
+        <label class="toggle"><input type="checkbox" id="only-mine" checked><span></span>Only my agents</label>
+        <button class="btn btn-ghost" type="button" id="refresh-activity">Refresh</button>
+      </div>
+    </div>
+
+    <div class="panel panel--flush">
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Request</th><th>Agent</th><th>Value</th><th>Status</th><th>Transactions</th><th>When</th><th></th></tr></thead>
+          <tbody id="activity-body"><tr><td colspan="7" class="empty">Loading onchain activity…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- World ID approval modal -->
+<div class="modal" id="worldid-modal" hidden>
+  <div class="modal-scrim" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="wid-title">
+    <div class="wid-orb" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="24" cy="24" r="20"/><path d="M4 24h40M24 4c-6 6-6 34 0 40M24 4c6 6 6 34 0 40"/></svg>
+    </div>
+    <h2 id="wid-title">Approve with World ID</h2>
+    <p class="modal-prompt" id="wid-prompt"></p>
+    <dl class="kv" id="wid-meta"></dl>
+    <ol class="tx-steps" id="wid-steps" hidden></ol>
+    <p class="hint" id="wid-hint"></p>
+    <div class="modal-actions">
+      <button class="btn btn-solid" type="button" id="wid-verify">Verify with World ID</button>
+      <button class="btn btn-ghost" type="button" id="wid-cancel">Cancel this trade</button>
+    </div>
+    <button class="modal-x" type="button" data-close aria-label="Close">×</button>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<datalist id="contract-list"></datalist>
+<datalist id="text-keys">
+  <option value="agent.capabilities"></option>
+  <option value="agent.description"></option>
+  <option value="agent.endpoint"></option>
+  <option value="agent.operator"></option>
+</datalist>
+
+<script src="/vendor/ethers.umd.min.js"></script>
+<script src="/vendor/idkit.js"></script>
+<script src="wallet.js"></script>
+<script src="chain.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
