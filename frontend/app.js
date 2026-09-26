@@ -231,7 +231,7 @@
       ? '<span class="s-err">● Not the contract relayer</span>'
       : h.relayer.matchesContract ? '<span class="s-ok">●</span> ' + esc(short(h.relayer.address)) : esc(short(h.relayer.address));
 
-    $$('[data-root]').forEach(function (el) { el.textContent = '.' + (h.rootEnsName || 'eth'); });
+    $$('[data-root]').forEach(function (el) { el.textContent = '.' + (h.rootEnsName || 'aegisnet.eth'); });
 
     var contracts = h.contracts || {};
     var names = Object.keys(contracts);
