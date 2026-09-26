@@ -163,7 +163,7 @@
     function next() {
       if (i >= candidates.length) return Promise.reject(new Error('Backend unreachable'));
       var base = candidates[i++];
-      return fetch(base + '/api/health', { signal: window.AbortSignal && AbortSignal.timeout ? AbortSignal.timeout(6000) : undefined })
+      return fetch(base + '/api/health?t=' + Date.now(), { signal: window.AbortSignal && AbortSignal.timeout ? AbortSignal.timeout(6000) : undefined })
         .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
         .then(function (health) {
           if (!health || health.status !== 'online') throw new Error();
