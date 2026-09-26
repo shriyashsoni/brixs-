@@ -45,8 +45,8 @@ interface Snapshot {
 }
 
 const POLL_MS = 12_000;
-const MAX_RANGE = 2_000;
-const MIN_RANGE = 10;
+const MAX_RANGE = 10;
+const MIN_RANGE = 1;
 
 /**
  * Reads AegisExecutionManager and AegisSubnameRegistry events from the chain and keeps an
@@ -189,7 +189,7 @@ export class IndexerService {
       return lo;
     } catch {
       // Non-archive RPCs can't read old state; index the recent window instead
-      return Math.max(0, this.head - 50_000);
+      return Math.max(0, this.head - 1000);
     }
   }
 

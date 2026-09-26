@@ -3,6 +3,7 @@
   "chainId": "11155111",
   "rootName": "aegisnet.eth",
   "deployer": "0x9eeAb92431FD385981735dbF5B949b6C4c2eBC39",
+  "startBlock": 11787900,
   "contracts": {
     "AegisSubnameRegistry": "0x48EEFC9F26181Bd059daCc3EF9fD70F197145373",
     "WorldIDVerifier": "0x15f25Fc3261B8d3cFb23679B9E65f4D030501623",

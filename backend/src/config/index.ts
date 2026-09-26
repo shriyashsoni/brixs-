@@ -14,6 +14,7 @@ const LOCAL_DEFAULTS = {
 
 // Precedence: local Hardhat defaults < deployed contracts.json < explicit CONTRACT_* env vars
 let contractAddresses = { ...LOCAL_DEFAULTS };
+let deployedStartBlock: number | undefined = undefined;
 
 // tsc does not copy JSON into dist/, so also look in src/config when running the build
 const deployedConfigPath = [
@@ -25,6 +26,9 @@ if (deployedConfigPath) {
     const deployed = JSON.parse(fs.readFileSync(deployedConfigPath, 'utf-8'));
     if (deployed.contracts) {
       contractAddresses = { ...contractAddresses, ...deployed.contracts };
+    }
+    if (deployed.startBlock) {
+      deployedStartBlock = Number(deployed.startBlock);
     }
   } catch (err) {
     console.warn('Could not parse contracts.json, using defaults or env vars.');
@@ -75,7 +79,7 @@ export const config = {
   anthropicApiKey: realValue(process.env.ANTHROPIC_API_KEY),
   claudeModel: process.env.CLAUDE_MODEL || 'claude-opus-5',
   // First block to index; auto-detected from the manager's deployment when unset
-  indexerStartBlock: process.env.INDEXER_START_BLOCK ? parseInt(process.env.INDEXER_START_BLOCK, 10) : undefined,
+  indexerStartBlock: process.env.INDEXER_START_BLOCK ? parseInt(process.env.INDEXER_START_BLOCK, 10) : deployedStartBlock,
   dataDir: process.env.DATA_DIR || path.resolve(__dirname, '../../data'),
   contracts: contractAddresses,
 };
